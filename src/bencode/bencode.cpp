@@ -16,7 +16,7 @@ decode_string(std::string_view &input);
 std::expected<bite::bencode::Dict, bite::bencode::ParseError>
 decode_dict(std::string_view &input);
 
-bite::bencode::ParseResult decode(std::string_view input)
+bite::bencode::ParseResult bite::bencode::decode(std::string_view input)
 {
     std::string_view cursor = input;
 
@@ -32,7 +32,7 @@ bite::bencode::ParseResult decode(std::string_view input)
     return result;
 }
 
-bite::bencode::ParseResult decode_some(std::string_view &input)
+bite::bencode::ParseResult bite::bencode::decode_some(std::string_view &input)
 {
     using enum bite::bencode::ParseError;
     if (input.empty()) {
@@ -155,7 +155,7 @@ decode_dict(std::string_view &input)
         first_key = false;
         last_key = *key_res;
 
-        auto val_res = decode_some(input);
+        auto val_res = bite::bencode::decode_some(input);
         if (!val_res.has_value()) {
             return std::unexpected(val_res.error());
         }

@@ -1,0 +1,6 @@
+{
+  "name": "bite",
+  "dependencies": [
+    "catch2"
+  ]
+}
