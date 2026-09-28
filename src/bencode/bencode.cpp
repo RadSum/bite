@@ -97,6 +97,9 @@ decode_list(std::string_view &input)
     if (input.empty()) {
         return std::unexpected(bite::bencode::ParseError::UnexpectedEof);
     }
+    if (input.front() != BENCODE_END_DELIM) {
+        return std::unexpected(bite::bencode::ParseError::InvalidFormat);
+    }
 
     input.remove_prefix(1);
     return list;
@@ -128,11 +131,12 @@ decode_string(std::string_view &input)
 std::expected<bite::bencode::Dict, bite::bencode::ParseError>
 decode_dict(std::string_view &input)
 {
-    if (input.empty() || input.at(0) != DICT_START_DELIM) {
+    if (input.empty() || input.front() != DICT_START_DELIM) {
         return std::unexpected(bite::bencode::ParseError::InvalidFormat);
     }
+    input.remove_prefix(1);
 
-    bite::bencode::Dict dict;
+    bite::bencode::Dict dict{};
 
     std::string last_key;
     bool first_key{true};
@@ -162,6 +166,13 @@ decode_dict(std::string_view &input)
 
         dict.emplace(std::move(*key_res), std::move(*val_res));
     }
+    if (input.empty()) {
+        return std::unexpected(bite::bencode::ParseError::UnexpectedEof);
+    }
+    if (input.front() != BENCODE_END_DELIM) {
+        return std::unexpected(bite::bencode::ParseError::InvalidFormat);
+    }
+    input.remove_prefix(1);
 
     return dict;
 }

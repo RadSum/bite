@@ -9,6 +9,7 @@
 
 namespace bite::bencode
 {
+
 struct Value;
 
 using Integer = std::int64_t;
@@ -30,7 +31,6 @@ struct Value {
 enum class ParseError : std::uint8_t {
     InvalidFormat,
     UnexpectedEof,
-    InvalidInteger,
     DuplicateKey,
     UnsortedKey,
 };

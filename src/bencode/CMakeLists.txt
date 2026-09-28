@@ -2,6 +2,7 @@ add_library(Bite-bencode
     bencode.cpp
     bencode.hpp
 )
+add_library(bite::bencode ALIAS Bite-bencode)
 
 target_include_directories(Bite-bencode PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -10,7 +11,7 @@ target_include_directories(Bite-bencode PUBLIC
 if (BITE_BUILD_TESTS)
     add_executable(test-bencode bencode_test.cpp)
     target_link_libraries(test-bencode PRIVATE
-        Bite-bencode
+        bite::bencode
         Catch2::Catch2WithMain
     )
 
