@@ -15,7 +15,10 @@ if (BITE_BUILD_TESTS)
     find_package(Catch2 3 REQUIRED)
 endif()
 
+find_package(OpenSSL REQUIRED)
+
 add_subdirectory(src/bencode)
+add_subdirectory(src/torrent)
 
 add_executable(${PROJECT_NAME})
 
