@@ -9,6 +9,7 @@ target_include_directories(Bite-torrent PUBLIC
 )
 
 target_link_libraries(Bite-torrent PUBLIC
+    bite::core
     bite::bencode
     OpenSSL::Crypto
 )

@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include "types.hpp"
+
 namespace bite::torrent
 {
 
@@ -15,7 +17,6 @@ struct FileInfo {
     std::vector<std::string> path;
 };
 
-using InfoHash = std::array<std::uint8_t, 20>;
 using PieceHash = std::array<std::uint8_t, 20>;
 
 struct Metainfo {
@@ -28,7 +29,7 @@ struct Metainfo {
     std::optional<std::uint64_t> length;
     std::vector<FileInfo> files;
 
-    InfoHash info_hash{};
+    bite::core::InfoHash info_hash{};
 
     bool is_multi_file() const { return !files.empty(); }
 

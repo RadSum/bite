@@ -18,6 +18,7 @@ endif()
 find_package(OpenSSL REQUIRED)
 find_package(Boost REQUIRED)
 
+add_subdirectory(src/core)
 add_subdirectory(src/bencode)
 add_subdirectory(src/torrent)
 add_subdirectory(src/tracker)

@@ -7,7 +7,7 @@
 namespace
 {
 
-std::string to_hex(const bite::torrent::InfoHash &hash)
+std::string to_hex(const bite::core::InfoHash &hash)
 {
     std::ostringstream oss;
     oss << std::hex << std::setfill('0');

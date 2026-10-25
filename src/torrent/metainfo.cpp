@@ -19,9 +19,9 @@ static constexpr auto NAME_INFO_DICT_KEY = "name";
 static constexpr auto LENGTH_FILES_DICT_KEY = "length";
 static constexpr auto PATH_FILES_DICT_KEY = "path";
 
-bite::torrent::InfoHash sha1(std::string_view bytes)
+bite::core::InfoHash sha1(std::string_view bytes)
 {
-    bite::torrent::InfoHash digest{};
+    bite::core::InfoHash digest{};
     ::SHA1(reinterpret_cast<const unsigned char *>(bytes.data()), bytes.size(),
            digest.data());
     return digest;
@@ -182,6 +182,8 @@ bite::torrent::parse_metainfo(std::string_view raw_bencode_bytes)
         !root_dict.at(ANNOUNCE_TORRENT_DICT_KEY).is<bite::bencode::String>()) {
         return std::unexpected(MissingAnnounce);
     }
+    meta.announce = *root_dict.at(ANNOUNCE_TORRENT_DICT_KEY).get<bite::bencode::String>();
+
     const auto &info_dict_res = root_dict.find(INFO_TORRENT_DICT_KEY);
     if (info_dict_res == root_dict.end() ||
         !info_dict_res->second.is<bite::bencode::Dict>()) {
