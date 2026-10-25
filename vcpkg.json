@@ -1,6 +1,7 @@
 {
   "name": "bite",
   "dependencies": [
-    "catch2"
+    "catch2",
+    "boost-beast"
   ]
 }
