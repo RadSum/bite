@@ -7,5 +7,6 @@ namespace bite::core
 {
 
 using InfoHash = std::array<std::uint8_t, 20>;
+using PeerId = std::array<std::uint8_t, 20>;
 
 } // namespace bite::core

@@ -1,6 +1,7 @@
 add_library(Bite-tracker
-    trackerclient.cpp
-    trackerclient.hpp
+    announce.hpp
+    response.hpp
+    response.cpp
 )
 add_library(bite::tracker ALIAS Bite-tracker)
 
@@ -9,5 +10,7 @@ target_include_directories(Bite-tracker PUBLIC
 )
 
 target_link_libraries(Bite-tracker PUBLIC
+    bite::core
+    bite::bencode
     Boost::headers
 )
