@@ -33,7 +33,7 @@ std::string_view event_to_string(bite::tracker::AnnounceEvent event)
 
 } // namespace
 
-std::expected<std::string, bite::tracker::TrackerError>
+std::expected<boost::urls::url, bite::tracker::TrackerError>
 bite::tracker::build_announce_url(std::string_view base_url,
                                   const AnnounceRequest &request)
 {
@@ -57,5 +57,5 @@ bite::tracker::build_announce_url(std::string_view base_url,
         params.append({"event", event_to_string(*request.event)});
     }
 
-    return std::string(url.buffer());
+    return url;
 }

@@ -4,6 +4,8 @@ add_library(Bite-tracker
     response.cpp
     url.hpp
     url.cpp
+    trackerclient.hpp
+    trackerclient.cpp
 )
 add_library(bite::tracker ALIAS Bite-tracker)
 
@@ -16,6 +18,16 @@ target_link_libraries(Bite-tracker PUBLIC
     bite::bencode
     Boost::headers
     Boost::url
+    OpenSSL::SSL
+    OpenSSL::Crypto
+)
+
+add_executable(Bite-tracker-test
+    main.cpp
+)
+target_link_libraries(Bite-tracker-test PRIVATE
+    bite::tracker
+    bite::torrent
 )
 
 if (BITE_BUILD_TESTS)
