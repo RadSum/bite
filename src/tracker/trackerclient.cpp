@@ -82,7 +82,7 @@ announce_plain(asio::any_io_executor executor,
         co_return network_error(ec);
     }
 
-    const auto result = co_await do_request(stream, url);
+    auto result = co_await do_request(stream, url);
 
     boost::system::error_code ignored;
     stream.socket().shutdown(asio::ip::tcp::socket::shutdown_both, ignored);
@@ -120,7 +120,7 @@ announce_tls(asio::any_io_executor executor, asio::ssl::context &ctx,
         co_return network_error(ec);
     }
 
-    const auto result = co_await do_request(stream, url);
+    auto result = co_await do_request(stream, url);
 
     beast::get_lowest_layer(stream).expires_after(IO_TIMEOUT);
     [[maybe_unused]] auto [shutdown_ec] = co_await stream.async_shutdown(use_nothrow);
@@ -146,12 +146,22 @@ bite::tracker::HttpTrackerClient::announce(std::string_view announce_url,
         co_return std::unexpected(url.error());
     }
 
-    const bool is_tls = url->scheme_id() == boost::urls::scheme::https;
+    const auto scheme = url->scheme_id();
+    if (scheme != boost::urls::scheme::http && scheme != boost::urls::scheme::https) {
+        co_return std::unexpected(TrackerError{
+            .kind = TrackerErrorKind::InvalidUrl,
+            .message = std::format("Unsupported tracker scheme: {}",
+                                   std::string_view(url->scheme())),
+        });
+    }
+
+    const bool is_tls = scheme == boost::urls::scheme::https;
     const auto port =
         url->has_port() ? std::string(url->port()) : (is_tls ? "443" : "80");
 
     asio::ip::tcp::resolver res(m_executor);
-    auto [ec, endpoints] = co_await res.async_resolve(url->host(), port, use_nothrow);
+    auto [ec, endpoints] =
+        co_await res.async_resolve(url->host_address(), port, use_nothrow);
     if (ec) {
         co_return network_error(ec);
     }
