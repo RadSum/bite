@@ -16,7 +16,7 @@ if (BITE_BUILD_TESTS)
 endif()
 
 find_package(OpenSSL REQUIRED)
-find_package(Boost REQUIRED)
+find_package(Boost CONFIG REQUIRED COMPONENTS url)
 
 add_subdirectory(src/core)
 add_subdirectory(src/bencode)
